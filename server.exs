@@ -23,6 +23,9 @@ defmodule Redirect do
   end
 end
 
-{:ok, _} = Plug.Cowboy.http(Redirect, [], port: 3000)
+port = String.to_integer(System.get_env("PORT", "3000"))
+
+{:ok, _} = Plug.Cowboy.http(Redirect, [], ip: {0, 0, 0, 0}, port: port)
+IO.puts("Redirect started at 0.0.0.0:#{port}")
 
 Process.sleep(:infinity)
