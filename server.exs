@@ -25,7 +25,11 @@ end
 
 port = String.to_integer(System.get_env("PORT", "3000"))
 
-{:ok, _} = Plug.Cowboy.http(Redirect, [], ip: {0, 0, 0, 0}, port: port)
-IO.puts("Redirect started at 0.0.0.0:#{port}")
+{opts, _, _} = OptionParser.parse(System.argv(), strict: [no_halt: :boolean])
 
-Process.sleep(:infinity)
+if Keyword.get(opts, :no_halt, false) do
+  {:ok, _} = Plug.Cowboy.http(Redirect, [], ip: {0, 0, 0, 0}, port: port)
+  IO.puts("Redirect started at 0.0.0.0:#{port}")
+
+  Process.sleep(:infinity)
+end
